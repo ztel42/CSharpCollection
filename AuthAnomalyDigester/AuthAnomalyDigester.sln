@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthAnomalyDigester", "AuthAnomalyDigester\AuthAnomalyDigester.csproj", "{49602DD7-5FE8-4BDF-824D-98D0DC263DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthAnomalyDigester.Tests", "AuthAnomalyDigester.Tests\AuthAnomalyDigester.Tests.csproj", "{8BD4898E-BFE0-4D57-B4AF-91ADC3A86A43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49602DD7-5FE8-4BDF-824D-98D0DC263DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49602DD7-5FE8-4BDF-824D-98D0DC263DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49602DD7-5FE8-4BDF-824D-98D0DC263DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49602DD7-5FE8-4BDF-824D-98D0DC263DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD4898E-BFE0-4D57-B4AF-91ADC3A86A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD4898E-BFE0-4D57-B4AF-91ADC3A86A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD4898E-BFE0-4D57-B4AF-91ADC3A86A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD4898E-BFE0-4D57-B4AF-91ADC3A86A43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
