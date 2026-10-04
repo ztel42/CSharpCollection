@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RootNamespace>BatchWatermarkExport</RootNamespace>
+    <AssemblyName>BatchWatermarkExport</AssemblyName>
+    <Version>0.1.0</Version>
+    <ApplicationTitle>BatchWatermarkExport</ApplicationTitle>
+    <Description>Folder watermark, platform resize, and EXIF keep or strip.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BatchWatermarkExport.Core\BatchWatermarkExport.Core.csproj" />
+  </ItemGroup>
+</Project>

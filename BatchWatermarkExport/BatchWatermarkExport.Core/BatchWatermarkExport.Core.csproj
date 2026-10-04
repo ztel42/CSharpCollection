@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BatchWatermarkExport</RootNamespace>
+    <AssemblyName>BatchWatermarkExport.Core</AssemblyName>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\LiberationSans-Regular.ttf">
+      <LogicalName>BatchWatermarkExport.Fonts.LiberationSans-Regular.ttf</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
