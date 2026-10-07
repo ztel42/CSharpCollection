@@ -1,0 +1,48 @@
+<Window x:Class="DigitalPreFlightChecklist.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DigitalPreFlightChecklist"
+        Height="560"
+        Width="560"
+        MinHeight="480"
+        MinWidth="480"
+        Background="#F4F6F8"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <TextBlock Text="Digital Pre-Flight Checklist" FontSize="22" FontWeight="SemiBold" Foreground="#1B2838"/>
+            <TextBlock TextWrapping="Wrap" Margin="0,4,0,0" Foreground="#4A5B6C"
+                       Text="Check props, firmware, batteries, LAANC authorization, and Remote ID. Complete / Save writes a timestamped log when all five are checked."/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Margin="0,16,0,0">
+            <TextBlock x:Name="StatusText" Text="Check all five items to enable Complete / Save." TextWrapping="Wrap" Foreground="#1B2838" Margin="0,0,0,8"/>
+            <Button x:Name="CompleteButton" Content="Complete / Save" Height="36"
+                    Click="Complete_Click" FontWeight="SemiBold" IsEnabled="False"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Aircraft" FontWeight="SemiBold" Margin="0,0,0,4" Foreground="#1B2838"/>
+                <TextBox x:Name="AircraftBox" Padding="6,4" Margin="0,0,0,12"/>
+
+                <TextBlock Text="Site / location" FontWeight="SemiBold" Margin="0,0,0,4" Foreground="#1B2838"/>
+                <TextBox x:Name="SiteBox" Padding="6,4" Margin="0,0,0,12"/>
+
+                <TextBlock Text="Required items" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="#1B2838"/>
+                <CheckBox x:Name="CbProps" Content="Props inspected / secured" Margin="0,4" Checked="ItemChanged" Unchecked="ItemChanged"/>
+                <CheckBox x:Name="CbFirmware" Content="Firmware current" Margin="0,4" Checked="ItemChanged" Unchecked="ItemChanged"/>
+                <CheckBox x:Name="CbBatteries" Content="Batteries charged / healthy" Margin="0,4" Checked="ItemChanged" Unchecked="ItemChanged"/>
+                <CheckBox x:Name="CbLaanc" Content="LAANC authorization obtained" Margin="0,4" Checked="ItemChanged" Unchecked="ItemChanged"/>
+                <CheckBox x:Name="CbRemoteId" Content="Remote ID broadcasting / compliant" Margin="0,4" Checked="ItemChanged" Unchecked="ItemChanged"/>
+
+                <TextBlock Text="Notes (optional)" FontWeight="SemiBold" Margin="0,16,0,4" Foreground="#1B2838"/>
+                <TextBox x:Name="NotesBox" Padding="6,4" Height="80" TextWrapping="Wrap" AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"/>
+
+                <TextBlock x:Name="LogsHint" Margin="0,12,0,0" Foreground="#4A5B6C" TextWrapping="Wrap"
+                           Text="Logs folder: set after first save (default under your home directory)."/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

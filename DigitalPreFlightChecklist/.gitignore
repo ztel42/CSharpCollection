@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+*.DotSettings.user
+.DS_Store
+publish/
