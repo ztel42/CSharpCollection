@@ -73,7 +73,7 @@ public static class BatchExporter
             try
             {
                 var sourceBytesNote = source;
-                using var loaded = Image.Load<Rgba32>(source);
+                using var loaded = SafeImageLoader.Load(source, request.Limits);
                 foreach (var preset in presets)
                 {
                     var destName = Path.GetFileNameWithoutExtension(source) + "__" + preset.Slug + extension;
@@ -90,7 +90,7 @@ public static class BatchExporter
                     written.Add(new ExportFileResult(source, dest, preset.Preset));
                 }
             }
-            catch (Exception ex) when (ex is UnknownImageFormatException or InvalidImageContentException or NotSupportedException or IOException)
+            catch (Exception ex) when (ex is ImageRejectedException or UnknownImageFormatException or InvalidImageContentException or NotSupportedException or IOException)
             {
                 failed.Add($"{source}: {ex.Message}");
             }

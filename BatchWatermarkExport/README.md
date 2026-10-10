@@ -9,6 +9,7 @@ WPF desktop app that watermarks a folder of stills, resizes them for a few platf
 ## What it does
 
 - Reads top-level `.jpg`, `.jpeg`, and `.png` files. Other files are skipped. Subfolders are not scanned.
+- Only real PNG/JPEG content is decoded; mismatched content (for example a TIFF renamed to `.jpg`) and sources over 100 MB, 20000 px per side, or 100 MP are rejected and reported as failures without stopping the batch.
 - Writes `{name}__{preset}{ext}` into an output folder. The output folder must sit **outside** the input folder. Sources are never opened for writing.
 - Stamps white text (Liberation Sans) at a corner or the center, with an opacity from 0 to 1.
 - Resizes to a preset canvas or leaves the original pixel size.
@@ -103,6 +104,8 @@ BatchWatermarkExport/
 ```
 
 ## Changelog
+
+- **Sat Oct 10, 2026 ET** — Security hardening. Sources are now decoded with an ImageSharp `Configuration` that registers **only the PNG and JPEG** formats (`SafeImageLoader`), so a TIFF, BMP, WEBP, or other file renamed to `.jpg`/`.png` is rejected with a clear `rejected: content is …` message and the rest of the batch continues. Before a full decode each source is checked with `Image.Identify` against resource limits (`DecodeLimits`): **100 MB** max file size, **20000 px** max per side, **100 megapixels** max, plus a **1024 MB** per-allocation cap on the decoder's `MemoryAllocator`. Limits are constants and can be overridden per `ExportRequest`. Stays on **SixLabors.ImageSharp 3.1.12**: 4.x (and 3.2.0) require a Six Labors license key for Release builds. This mitigates the two reachable Moderate advisories: [GHSA-wmxv-xphr-5c9g](https://github.com/advisories/GHSA-wmxv-xphr-5c9g) (BigTIFF decoder loop; TIFF can no longer be decoded) and [GHSA-gwg2-r3hj-4w44](https://github.com/advisories/GHSA-gwg2-r3hj-4w44) (ICC CLUT allocation; in 3.x it is only reachable through `IccProfile.Entries`, which the pipeline never reads; ICC bytes pass through untouched). The three High advisories (histogram equalization, TIFF T4/T6 encoders) are not used by this app. Dependabot now ignores SixLabors major-version bumps.
 
 - **Sun Oct 4, 2026 ET** — Initial version: folder watermark, YouTube / Instagram / full-res presets (center cover-crop, watermark after resize), and EXIF keep or strip.
 

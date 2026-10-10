@@ -186,7 +186,9 @@ public static class Program
             Resize is center cover-crop (uniform scale, no stretch). The watermark
             is drawn after resize. Output files are NAME__PRESET.ext and are never
             written back onto the sources. The output folder must sit outside input.
-            Only top-level .jpg, .jpeg, and .png files are exported.
+            Only top-level .jpg, .jpeg, and .png files are exported, and only when
+            their content really is PNG or JPEG (a TIFF renamed to .jpg is rejected).
+            Sources over 100 MB, 20000 px per side, or 100 megapixels are rejected.
             """);
     }
 }

@@ -41,7 +41,8 @@ public sealed record ExportRequest(
     string OutputDirectory,
     WatermarkOptions Watermark,
     ExifPolicy Exif,
-    IReadOnlyList<PlatformPreset> Presets);
+    IReadOnlyList<PlatformPreset> Presets,
+    DecodeLimits? Limits = null);
 
 public sealed record ExportFileResult(
     string SourcePath,

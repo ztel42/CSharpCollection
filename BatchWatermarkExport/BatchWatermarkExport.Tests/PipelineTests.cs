@@ -289,6 +289,109 @@ public class PipelineTests
         Assert.Null(thumb.Metadata.ExifProfile);
     }
 
+    [Fact]
+    public void Tiff_renamed_to_jpg_is_rejected_and_the_batch_continues()
+    {
+        using var dir = new TempTree();
+        WriteSolid(dir.InputFile("good.png"), 40, 30, Background);
+        WriteSolid(dir.InputFile("good.jpg"), 40, 30, Background);
+        using (var tiff = new Image<Rgba32>(40, 30, Background))
+        {
+            tiff.SaveAsTiff(dir.InputFile("evil.jpg"));
+        }
+
+        using (var bmp = new Image<Rgba32>(40, 30, Background))
+        {
+            bmp.SaveAsBmp(dir.InputFile("sneaky.png"));
+        }
+
+        var result = Export(dir, "WM", WatermarkPosition.TopLeft, 1f, 12f, ExifPolicy.Strip, PlatformPreset.FullResPortfolio);
+
+        Assert.Equal(2, result.Written.Count);
+        Assert.Contains(result.Written, item => item.SourcePath.EndsWith("good.png", StringComparison.Ordinal));
+        Assert.Contains(result.Written, item => item.SourcePath.EndsWith("good.jpg", StringComparison.Ordinal));
+        Assert.Equal(2, result.Failed.Count);
+        Assert.Contains(result.Failed, f => f.Contains("evil.jpg", StringComparison.Ordinal) && f.Contains("TIFF", StringComparison.OrdinalIgnoreCase) && f.Contains("rejected", StringComparison.Ordinal));
+        Assert.Contains(result.Failed, f => f.Contains("sneaky.png", StringComparison.Ordinal) && f.Contains("BMP", StringComparison.OrdinalIgnoreCase));
+        Assert.False(File.Exists(Path.Combine(dir.Output, "evil__full-res.jpg")));
+    }
+
+    [Fact]
+    public void Safe_loader_cannot_decode_tiff_even_when_called_directly()
+    {
+        using var dir = new TempTree();
+        var path = dir.InputFile("photo.jpeg");
+        using (var tiff = new Image<Rgba32>(8, 8, Background))
+        {
+            tiff.SaveAsTiff(path);
+        }
+
+        Assert.Throws<ImageRejectedException>(() => SafeImageLoader.Load(path));
+        Assert.Throws<UnknownImageFormatException>(() => Image.Load<Rgba32>(new SixLabors.ImageSharp.Formats.DecoderOptions { Configuration = SafeImageLoader.Configuration }, path));
+    }
+
+    [Fact]
+    public void Valid_png_and_jpeg_are_still_watermarked_through_the_safe_loader()
+    {
+        using var dir = new TempTree();
+        WriteSolid(dir.InputFile("a.png"), 480, 320, Background);
+        WriteSolid(dir.InputFile("b.jpg"), 480, 320, Background);
+
+        var result = Export(dir, "WM", WatermarkPosition.TopLeft, 1f, 48f, ExifPolicy.Strip, PlatformPreset.FullResPortfolio);
+
+        Assert.Empty(result.Failed);
+        Assert.Equal(2, result.Written.Count);
+        using var png = Image.Load<Rgba32>(result.Written.Single(w => w.OutputPath.EndsWith(".png", StringComparison.Ordinal)).OutputPath);
+        Assert.True(CountDiff(png, Background, 0, 0, 240, 160) > 30);
+        using var jpg = Image.Load<Rgba32>(result.Written.Single(w => w.OutputPath.EndsWith(".jpg", StringComparison.Ordinal)).OutputPath);
+        Assert.Equal(480, jpg.Width);
+        Assert.Equal(320, jpg.Height);
+    }
+
+    [Fact]
+    public void Oversized_image_is_rejected_before_decode_and_the_batch_continues()
+    {
+        using var dir = new TempTree();
+        WriteSolid(dir.InputFile("big.png"), 300, 200, Background);
+        WriteSolid(dir.InputFile("small.png"), 50, 40, Background);
+        var limits = new DecodeLimits(DecodeLimits.DefaultMaxFileBytes, 100, 100, 10_000);
+
+        var result = BatchExporter.Export(new ExportRequest(
+            dir.Input,
+            dir.Output,
+            new WatermarkOptions("WM", WatermarkPosition.Center, 1f, 12f),
+            ExifPolicy.Strip,
+            [PlatformPreset.FullResPortfolio],
+            limits));
+
+        Assert.Single(result.Written);
+        Assert.EndsWith("small.png", result.Written[0].SourcePath, StringComparison.Ordinal);
+        var failure = Assert.Single(result.Failed);
+        Assert.Contains("big.png", failure, StringComparison.Ordinal);
+        Assert.Contains("300x200", failure, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void File_over_the_size_limit_is_rejected()
+    {
+        using var dir = new TempTree();
+        var path = dir.InputFile("heavy.png");
+        WriteSolid(path, 64, 64, Background);
+        var limits = DecodeLimits.Default with { MaxFileBytes = 16 };
+
+        var ex = Assert.Throws<ImageRejectedException>(() => SafeImageLoader.Load(path, limits));
+        Assert.Contains("byte limit", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Default_limits_are_documented_values()
+    {
+        Assert.Equal(100L * 1024 * 1024, DecodeLimits.Default.MaxFileBytes);
+        Assert.Equal(20_000, DecodeLimits.Default.MaxWidth);
+        Assert.Equal(20_000, DecodeLimits.Default.MaxHeight);
+        Assert.Equal(100_000_000, DecodeLimits.Default.MaxPixels);
+    }
+
     private static ExportResult Export(
         TempTree dir,
         string text,

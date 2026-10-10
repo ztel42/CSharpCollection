@@ -15,6 +15,8 @@ Collected C# projects from my portfolio.
 
 ## Changelog
 
+- **Sat Oct 10, 2026 ET** — `BatchWatermarkExport` security hardening: PNG/JPEG-only decoding plus file-size/pixel limits; stays on ImageSharp 3.1.12 (4.x needs a license key). Mitigates GHSA-wmxv-xphr-5c9g and GHSA-gwg2-r3hj-4w44. See that folder’s README.
+
 - **Wed Oct 7, 2026 ET** — Added `DigitalPreFlightChecklist`: props/firmware/batteries/LAANC/Remote ID checklist with timestamped completion logs. See that folder’s README.
 
 - **Sun Oct 4, 2026 ET** — Added `BatchWatermarkExport`: folder watermark, platform resize presets, and EXIF keep/strip. See that folder’s README.

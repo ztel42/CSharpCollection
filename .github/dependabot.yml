@@ -12,6 +12,11 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 5
+    ignore:
+      # ImageSharp 4.x / 3.2+ require a Six Labors license key for Release builds.
+      # Stay on 3.x; reachable risk is mitigated in code (PNG/JPEG-only decoding + limits).
+      - dependency-name: "SixLabors.*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "nuget"
     directory: "/C-BasicCalculator"
     schedule:
