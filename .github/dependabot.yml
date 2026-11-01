@@ -14,9 +14,10 @@ updates:
     open-pull-requests-limit: 5
     ignore:
       # ImageSharp 4.x / 3.2+ require a Six Labors license key for Release builds.
-      # Stay on 3.x; reachable risk is mitigated in code (PNG/JPEG-only decoding + limits).
+      # Stay on 3.1.x; reachable risk is mitigated in code (PNG/JPEG-only decoding + limits).
+      # Sun Nov 1, 2026 ET: also ignore minor bumps (3.2.0 needs a license key).
       - dependency-name: "SixLabors.*"
-        update-types: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
   - package-ecosystem: "nuget"
     directory: "/C-BasicCalculator"
     schedule:
@@ -31,6 +32,12 @@ updates:
     open-pull-requests-limit: 5
   - package-ecosystem: "nuget"
     directory: "/CsharpMicrosoftAppScanner"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+  - package-ecosystem: "nuget"
+    directory: "/DigitalPreFlightChecklist"
     schedule:
       interval: "weekly"
       day: "monday"

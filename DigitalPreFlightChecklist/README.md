@@ -114,6 +114,8 @@ DigitalPreFlightChecklist/
 
 ## Changelog
 
+- **Sun Nov 1, 2026 ET** — Added this project to `.github/dependabot.yml` (weekly NuGet updates).
+
 - **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`; WPF app `net10.0-windows`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Debug + Release build on the .NET 10 SDK and all tests pass; no package changes.
 
 - **Wed Oct 7, 2026 ET** — Initial version: five-item pre-flight checklist, WPF UI, CLI complete/save, timestamped JSON logs (UTC + Eastern).
