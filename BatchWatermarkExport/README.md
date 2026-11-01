@@ -1,6 +1,6 @@
 # BatchWatermarkExport
 
-WPF desktop app that watermarks a folder of stills, resizes them for a few platform canvases, and either keeps or strips EXIF. The image pipeline is a .NET 8 class library (SixLabors.ImageSharp) so it can be tested on Linux. A small console runner calls the same pipeline.
+WPF desktop app that watermarks a folder of stills, resizes them for a few platform canvases, and either keeps or strips EXIF. The image pipeline is a .NET 10 class library (SixLabors.ImageSharp) so it can be tested on Linux. A small console runner calls the same pipeline.
 
 **Author:** Zach Telford ([ztel42](https://github.com/ztel42))
 
@@ -49,16 +49,16 @@ Empty watermark text, or opacity 0, skips the stamp and still exports the resize
 
 | Project | TFM | Role |
 | --- | --- | --- |
-| `BatchWatermarkExport.Core` | `net8.0` | Pipeline. This is what tests call. |
-| `BatchWatermarkExport.Cli` | `net8.0` | Console runner for the same pipeline. |
-| `BatchWatermarkExport.App` | `net8.0-windows` (WPF) | Folder pickers, watermark text, opacity, position, presets, keep/strip, export. |
-| `BatchWatermarkExport.Tests` | `net8.0` | xUnit. |
+| `BatchWatermarkExport.Core` | `net10.0` | Pipeline. This is what tests call. |
+| `BatchWatermarkExport.Cli` | `net10.0` | Console runner for the same pipeline. |
+| `BatchWatermarkExport.App` | `net10.0-windows` (WPF) | Folder pickers, watermark text, opacity, position, presets, keep/strip, export. |
+| `BatchWatermarkExport.Tests` | `net10.0` | xUnit. |
 
-The WPF project sets `EnableWindowsTargeting` so the Windows desktop project can compile on a non-Windows .NET 8 SDK. The WinExe still **runs only on Windows**.
+The WPF project sets `EnableWindowsTargeting` so the Windows desktop project can compile on a non-Windows .NET 10 SDK. The WinExe still **runs only on Windows**.
 
 ## Requirements
 
-- .NET 8 SDK
+- .NET 10 SDK
 - Windows to launch the WPF app
 
 The embedded face is the unmodified Liberation Sans Regular file (SIL Open Font License 1.1). See `BatchWatermarkExport.Core/Fonts/OFL-LICENSE.txt`.
@@ -97,13 +97,15 @@ dotnet run --project BatchWatermarkExport.Cli -- \
 BatchWatermarkExport/
   BatchWatermarkExport.sln
   BatchWatermarkExport.Core/     # ImageSharp pipeline and embedded font
-  BatchWatermarkExport.Cli/      # net8.0 console runner
-  BatchWatermarkExport.App/      # WPF UI (net8.0-windows)
+  BatchWatermarkExport.Cli/      # net10.0 console runner
+  BatchWatermarkExport.App/      # WPF UI (net10.0-windows)
   BatchWatermarkExport.Tests/
   README.md
 ```
 
 ## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`; WPF app `net10.0-windows`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Debug + Release build on the .NET 10 SDK and all tests pass; no package changes. ImageSharp stays on 3.1.12.
 
 - **Sat Oct 10, 2026 ET** — Security hardening. Sources are now decoded with an ImageSharp `Configuration` that registers **only the PNG and JPEG** formats (`SafeImageLoader`), so a TIFF, BMP, WEBP, or other file renamed to `.jpg`/`.png` is rejected with a clear `rejected: content is …` message and the rest of the batch continues. Before a full decode each source is checked with `Image.Identify` against resource limits (`DecodeLimits`): **100 MB** max file size, **20000 px** max per side, **100 megapixels** max, plus a **1024 MB** per-allocation cap on the decoder's `MemoryAllocator`. Limits are constants and can be overridden per `ExportRequest`. Stays on **SixLabors.ImageSharp 3.1.12**: 4.x (and 3.2.0) require a Six Labors license key for Release builds. This mitigates the two reachable Moderate advisories: [GHSA-wmxv-xphr-5c9g](https://github.com/advisories/GHSA-wmxv-xphr-5c9g) (BigTIFF decoder loop; TIFF can no longer be decoded) and [GHSA-gwg2-r3hj-4w44](https://github.com/advisories/GHSA-gwg2-r3hj-4w44) (ICC CLUT allocation; in 3.x it is only reachable through `IccProfile.Entries`, which the pipeline never reads; ICC bytes pass through untouched). The three High advisories (histogram equalization, TIFF T4/T6 encoders) are not used by this app. Dependabot now ignores SixLabors major-version bumps.
 

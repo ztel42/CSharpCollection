@@ -15,6 +15,8 @@ Collected C# projects from my portfolio.
 
 ## Changelog
 
+- **Sun Nov 1, 2026 ET** — Retargeted every project from .NET 8 to **.NET 10** (`net10.0` / `net10.0-windows`) ahead of .NET 8 end of support on Nov 10, 2026. All projects build Debug + Release on the .NET 10 SDK; all test suites pass (AuthAnomalyDigester 19, BatchWatermarkExport 20, DigitalPreFlightChecklist 11, BasicCalculator 13, ProcessPortSnapshot 5). No package changes; ImageSharp stays on 3.1.12.
+
 - **Sat Oct 10, 2026 ET** — `BatchWatermarkExport` security hardening: PNG/JPEG-only decoding plus file-size/pixel limits; stays on ImageSharp 3.1.12 (4.x needs a license key). Mitigates GHSA-wmxv-xphr-5c9g and GHSA-gwg2-r3hj-4w44. See that folder’s README.
 
 - **Wed Oct 7, 2026 ET** — Added `DigitalPreFlightChecklist`: props/firmware/batteries/LAANC/Remote ID checklist with timestamped completion logs. See that folder’s README.

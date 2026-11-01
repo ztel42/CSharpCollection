@@ -108,3 +108,6 @@ Some applications may be installed per-user (in AppData) rather than system-wide
 License
 This project is licensed under the MIT License.
 
+## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Builds Debug + Release on the .NET 10 SDK; no package changes.

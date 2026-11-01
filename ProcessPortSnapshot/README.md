@@ -9,11 +9,11 @@ Useful for quick host hygiene checks and IR triage: what is listening, and which
 - Lists processes (PID, name, path when readable)
 - Lists listening endpoints (protocol, address, port, owning PID/name on Linux)
 - Console table, JSON, or CSV export
-- Works on Linux and Windows (.NET 8)
+- Works on Linux and Windows (.NET 10)
 
 ## Requirements
 
-- .NET 8 SDK
+- .NET 10 SDK
 
 ## Build and test
 
@@ -34,3 +34,7 @@ On Linux, listener rows include PID/process via `/proc`. On Windows, listeners c
 ## Disclaimer
 
 For systems you own or are authorized to inspect. Not a substitute for EDR.
+
+## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Builds Debug + Release on the .NET 10 SDK; no package changes.

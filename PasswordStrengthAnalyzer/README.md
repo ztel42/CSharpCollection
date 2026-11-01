@@ -178,7 +178,7 @@ Replace the default xUnit project file `.tests/PasswordAnalyzer.Tests/PasswordAn
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <RootNamespace>PasswordAnalyzer.Tests</RootNamespace>
   </PropertyGroup>
@@ -250,3 +250,7 @@ jobs:
 ## 📄 License
 
 MIT (feel free to adapt for your portfolio).
+
+## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Builds Debug + Release on the .NET 10 SDK; no package changes.

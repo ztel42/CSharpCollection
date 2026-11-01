@@ -1,6 +1,6 @@
 # DigitalPreFlightChecklist
 
-WPF desktop app for a digital drone pre-flight checklist. Checkboxes cover **props**, **firmware**, **batteries**, **LAANC authorization**, and **Remote ID**. Completing the list writes a timestamped JSON log. Core logic is a .NET 8 class library so it can be tested on Linux. A small console runner calls the same service.
+WPF desktop app for a digital drone pre-flight checklist. Checkboxes cover **props**, **firmware**, **batteries**, **LAANC authorization**, and **Remote ID**. Completing the list writes a timestamped JSON log. Core logic is a .NET 10 class library so it can be tested on Linux. A small console runner calls the same service.
 
 **Author:** Zach Telford ([ztel42](https://github.com/ztel42))
 
@@ -51,16 +51,16 @@ Default logs folder: `~/DigitalPreFlightChecklist/logs` (override with `--logs` 
 
 | Project | TFM | Role |
 | --- | --- | --- |
-| `DigitalPreFlightChecklist.Core` | `net8.0` | Draft validation and log writer. This is what tests call. |
-| `DigitalPreFlightChecklist.Cli` | `net8.0` | Console runner for headless complete/save. |
-| `DigitalPreFlightChecklist.App` | `net8.0-windows` (WPF) | Checkboxes, notes, aircraft/site, Complete / Save. |
-| `DigitalPreFlightChecklist.Tests` | `net8.0` | xUnit. |
+| `DigitalPreFlightChecklist.Core` | `net10.0` | Draft validation and log writer. This is what tests call. |
+| `DigitalPreFlightChecklist.Cli` | `net10.0` | Console runner for headless complete/save. |
+| `DigitalPreFlightChecklist.App` | `net10.0-windows` (WPF) | Checkboxes, notes, aircraft/site, Complete / Save. |
+| `DigitalPreFlightChecklist.Tests` | `net10.0` | xUnit. |
 
-The WPF project sets `EnableWindowsTargeting` so the Windows desktop project can compile on a non-Windows .NET 8 SDK. The WinExe still **runs only on Windows**.
+The WPF project sets `EnableWindowsTargeting` so the Windows desktop project can compile on a non-Windows .NET 10 SDK. The WinExe still **runs only on Windows**.
 
 ## Requirements
 
-- .NET 8 SDK
+- .NET 10 SDK
 - Windows to launch the WPF app
 
 ## Build and test
@@ -106,13 +106,15 @@ Incomplete checklists exit with code `1` and write nothing.
 DigitalPreFlightChecklist/
   DigitalPreFlightChecklist.sln
   DigitalPreFlightChecklist.Core/     # Checklist service and log writer
-  DigitalPreFlightChecklist.Cli/      # net8.0 console runner
-  DigitalPreFlightChecklist.App/      # WPF UI (net8.0-windows)
+  DigitalPreFlightChecklist.Cli/      # net10.0 console runner
+  DigitalPreFlightChecklist.App/      # WPF UI (net10.0-windows)
   DigitalPreFlightChecklist.Tests/
   README.md
 ```
 
 ## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`; WPF app `net10.0-windows`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Debug + Release build on the .NET 10 SDK and all tests pass; no package changes.
 
 - **Wed Oct 7, 2026 ET** — Initial version: five-item pre-flight checklist, WPF UI, CLI complete/save, timestamped JSON logs (UTC + Eastern).
 

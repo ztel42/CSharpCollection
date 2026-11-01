@@ -67,7 +67,7 @@ Auto-detect with `--format auto` (default), or force `--format linux` / `--forma
 
 ## Requirements
 
-- .NET 8 SDK
+- .NET 10 SDK
 
 ---
 
@@ -146,3 +146,7 @@ Detection defaults, sliding-window brute-force logic, odd-hour window semantics,
 ## License
 
 For portfolio demonstration. Use only with authorized log files.
+
+## Changelog
+
+- **Sun Nov 1, 2026 ET** — Retargeted from .NET 8 to **.NET 10** (`net10.0`) because .NET 8 support ends Nov 10, 2026 and stops getting security patches. Builds Debug + Release on the .NET 10 SDK; no package changes.
